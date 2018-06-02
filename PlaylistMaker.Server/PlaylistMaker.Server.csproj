@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6BBC3D74-456F-40CB-835C-C96704F4C6C2}</ProjectGuid>
+    <ProjectGuid>{31D3AE66-07B1-4F8F-9E7F-DD2BE446E504}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>PlaylistMaker</RootNamespace>
-    <AssemblyName>PlaylistMaker</AssemblyName>
+    <RootNamespace>PlaylistMaker.Server</RootNamespace>
+    <AssemblyName>PlaylistMaker.Server</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -34,6 +34,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -42,11 +43,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="Server.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PlaylistMaker.Logic\PlaylistMaker.Logic.csproj">
+      <Project>{6ed95f56-0b74-4a1c-b90b-61bf6113509f}</Project>
+      <Name>PlaylistMaker.Logic</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
