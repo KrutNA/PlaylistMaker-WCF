@@ -8,7 +8,6 @@ namespace PlaylistMaker.Logic.Commands
     public class CompositionSearchEngine : ICommand
     {
         private const string Name = "search";
-        private const int ArgsCount = 4;
 
         public ObjectModel Execute(ObjectModel model)
         {
@@ -39,28 +38,28 @@ namespace PlaylistMaker.Logic.Commands
         {
             var input = new Input();
             var output = new Output();
-            var _args = new[]
+            var args = new[]
             {
                 input.Execute("Playlist name: "),
                 input.Execute("Path to composition: "),
                 input.Execute("Composition author: "),
                 input.Execute("Composition title: "),
             };
-            if (string.IsNullOrWhiteSpace(_args[0]) ||
-                (string.IsNullOrWhiteSpace(_args[1]) &&
-                 string.IsNullOrWhiteSpace(_args[2]) &&
-                 string.IsNullOrWhiteSpace(_args[3])))
+            if (string.IsNullOrWhiteSpace(args[0]) ||
+                (string.IsNullOrWhiteSpace(args[1]) &&
+                 string.IsNullOrWhiteSpace(args[2]) &&
+                 string.IsNullOrWhiteSpace(args[3])))
             {
                 output.Execute("One or more arguments is null or whitespace!\n");
-                return new ObjectModel() { IsNotNull = false };
+                return new ObjectModel() { IsNull = true };
             }
             return new ObjectModel()
             {
-                IsNotNull = true,
-                Result = _args[0],
+                IsNull = false,
+                Result = args[0],
                 Compositions = new[]
                 {
-                    new Composition(_args[1], _args[2], _args[3])
+                    new Composition(args[1], args[2], args[3])
                 }
             };
         }

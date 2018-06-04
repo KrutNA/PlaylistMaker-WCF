@@ -4,7 +4,7 @@ namespace PlaylistMaker.Logic.Model
 {
     public struct ObjectModel
     {
-        public bool IsNotNull;
+        public bool IsNull;
 
         public string Result;
 
@@ -15,8 +15,6 @@ namespace PlaylistMaker.Logic.Model
         public override string ToString()
         {
             var result = "";
-            if (Result != null)
-                result += Result + "\n";
             if (Results != null && Results.Length != 0) result = Results.Aggregate(result, (current, val) => current + val + "\n");
             if (Compositions != null && Compositions.Length != 0) result = Compositions.Aggregate(result, (current, val) => current + val.ToString() + "\n");
             return result;

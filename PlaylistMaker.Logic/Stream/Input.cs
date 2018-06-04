@@ -12,11 +12,19 @@ namespace PlaylistMaker.Logic.Stream
             return Console.ReadLine();
         }
 
+        public string Execute(ConsoleColor color)
+        {
+            Console.ForegroundColor = color;
+            var value = Console.ReadLine();
+            Console.ForegroundColor = ConsoleColor.White;
+            return value;
+        }
+
         public string Execute(string outputText)
         {
             var output = new Output();
-            output.Execute(outputText);
-            return this.Execute();
+            output.Execute(outputText, ConsoleColor.Yellow);
+            return this.Execute(ConsoleColor.Cyan);
         }
 
         public ConsoleKeyInfo ReadKey()

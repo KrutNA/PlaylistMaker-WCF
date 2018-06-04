@@ -1,12 +1,12 @@
 ﻿using System;
 using System.ServiceModel;
+using System.ServiceModel.Web;
 using System.Threading;
 using PlaylistMaker.Logic.Stream;
-using PlaylistMaker.Logic.Model;
 
 namespace PlaylistMaker.Server
 {
-    public class Server
+    internal class Server
     {
         private static ServiceHost _host;
         private static Output _output;
@@ -23,26 +23,23 @@ namespace PlaylistMaker.Server
         private static void Main(string[] args)
         {
             Console.Title = "Server";
+            if (args.Length != 2)
+                args = new[] {"localhost", "10666"};
             _output = new Output();
             _input = new Input();
-            var binding = new BasicHttpBinding();
-            var contract = typeof(IContract);
             var check = new Thread(CheckInput);
-            const string address = "http://localhost:10666/IContract";
-
-            _host = new ServiceHost(typeof(Service));
-            _host.AddServiceEndpoint(contract, binding, address);
+            var address = $"http://{args[0]}:{args[1]}/IContract";
+            _host = new WebServiceHost(new Service(), new Uri(address));
             check.Start();
-            _host.Open();
-            /*try
+            try
             {
+              _host.Open();
             }
             catch (Exception e)
             {
                 _output.Execute($"{e}");
                 _input.ReadKey();
-                return;
-            }*/
+            }
         }
     }
 }

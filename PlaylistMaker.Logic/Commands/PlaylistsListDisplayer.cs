@@ -7,29 +7,21 @@ namespace PlaylistMaker.Logic.Commands
 {
     public class PlaylistsListDisplayer : ICommand
     {
-        private const string Name = "ls";
-        private const int ArgsCount = 0;
+        private const string Name = "ls p";
         private List<string> _fileNames;
 
         public ObjectModel Execute(ObjectModel model)
         {
             _fileNames = Directory.GetFiles(Directory.GetCurrentDirectory(), "*.pls").ToList();
             _fileNames = _fileNames.Select(Path.GetFileName).ToList();
-            if (_fileNames.Count == 0)
-                return new ObjectModel()
-                {
-                    Result = "Not found"
-                };
-            return new ObjectModel()
-            {
-                Result = "Done",
-                Results = _fileNames.ToArray()
-            };
+            return _fileNames.Count == 0 ?
+                new ObjectModel() { Result = "Not found" } :
+                new ObjectModel() { Result = "Done", Results = _fileNames.ToArray() };
         }
 
         public ObjectModel ReadArgs()
         {
-            return new ObjectModel() {IsNotNull = false};
+            return new ObjectModel();
         }
 
         public string GetName()

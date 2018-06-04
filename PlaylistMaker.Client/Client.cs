@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Text;
-using System.Net.Http;
-using System.ServiceModel;
-using PlaylistMaker.Logic.Stream;
+using System.ServiceModel.Web;
 using PlaylistMaker.Logic.Model;
+using PlaylistMaker.Logic.Stream;
 
+// ReSharper disable once CheckNamespace
 namespace PlaylistMaker.Client
 {
     internal class Client
@@ -21,28 +20,34 @@ namespace PlaylistMaker.Client
             if (args.Length == 2)
             {
                 var address = $"http://{args[0]}:{args[1]}/IContract";
-                var binding = new BasicHttpBinding();
-                var endpoint = new EndpointAddress(address);
-                var factory = new ChannelFactory<IContract>(binding, endpoint);
+                var factory = new WebChannelFactory<IContract>(new Uri(address));
                 while (true)
                 {
                     var engine = new RequesEngine();
                     if (!engine.Create())
                     {
-                        _output.Execute("Unknown command\n");
+                        _output.Execute("Unknown command\n", ConsoleColor.Red);
                         continue;
                     }
 
-                    var channel = factory.CreateChannel();
-                    engine.Execute(ref channel);
+                    if (engine.IsNotCreated)
+                        continue;
+                    try
+                    {
+                        var channel = factory.CreateChannel();
+                        engine.Execute(ref channel);
+                    }
+                    catch
+                    {
+                        _output.Execute("Can't connect to server\n",
+                            ConsoleColor.Red);
+                    }
                 }
             }
-            else
-            {
-                _output.Execute(
-                    "Program need only 2 arguments:\n\t1) IP addres of Server\n\t2) Port for connection\nPress any key to exit");
-                _input.ReadKey();
-            }
+            _output.Execute(
+                "Program need only 2 arguments:\n\t1) IP addres of Server\n\t2) Port for connection\nPress any key to exit",
+                ConsoleColor.Red);
+            _input.ReadKey();
         }
     }
 }

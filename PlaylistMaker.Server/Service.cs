@@ -1,82 +1,84 @@
 ﻿using System;
 using System.Linq;
 using System.IO;
+using System.ServiceModel;
 using PlaylistMaker.Logic.Commands;
 using PlaylistMaker.Logic.Model;
 using PlaylistMaker.Logic.Stream;
 namespace PlaylistMaker.Server
 {
-    class Service : IContract
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
+    internal class Service : IContract
     {
-        private Output output;
-        private string s = Environment.NewLine;
-        private string path = Environment.CurrentDirectory + "logs.log";
-
+        private Output _output;
+        private readonly string _newLine = Environment.NewLine;
+        private readonly string _path = Environment.CurrentDirectory + "logs.log";
+        
         public ObjectModel GetHelp()
         {
-            output = new Output();
+            _output = new Output();
             var request =
-                $"[{DateTime.Now}]{s}New sequence:{s}\tGetting help{s}{s}";
-            output.Execute(request);
-            File.AppendAllText(path, request);
+                $"[{DateTime.Now}]{_newLine}New request:{_newLine}\tGetting help{_newLine}{_newLine}";
+            _output.Execute(request);
+            File.AppendAllText(_path, request);
             var helpDisplayer = new PMHelpDisplayer();
             return helpDisplayer.Execute(new ObjectModel());
         }
 
         public ObjectModel AddComposition(ObjectModel model)
         {
-            output = new Output();
+            _output = new Output();
             var composition = model.Compositions.First();
             var request =
-                $"[{DateTime.Now}]{s}New sequence:{s}\tAdding composition:{s}\t\t{model.Result}{s}\t\t{composition.Path}{s}\t\t{composition.Author}{s}\t\t{composition.Title}{s}{s}";
-            output.Execute(request);
-            File.AppendAllText(path, request);
+                $"[{DateTime.Now}]{_newLine}New request:{_newLine}\tAdding composition:{_newLine}\t\t{model.Result}{_newLine}\t\t{composition.Path}{_newLine}\t\t{composition.Author}{_newLine}\t\t{composition.Title}{_newLine}{_newLine}";
+            _output.Execute(request);
+            File.AppendAllText(_path, request);
             var adder = new CompositionAdder();
             return adder.Execute(model);
         }
 
         public ObjectModel RemoveComposition(ObjectModel model)
         {
-            output = new Output();
+            _output = new Output();
             var composition = model.Compositions.First();
             var request =
-                $"[{DateTime.Now}]{s}New sequence:{s}\tRemoving composition:{s}\t\t{model.Result}{s}\t\t{composition.Path}{s}\t\t{composition.Author}{s}\t\t{composition.Title}{s}{s}";
-            output.Execute(request);
-            File.AppendAllText(path, request);
+                $"[{DateTime.Now}]{_newLine}New request:{_newLine}\tRemoving composition:{_newLine}\t\t{model.Result}{_newLine}\t\t{composition.Path}{_newLine}\t\t{composition.Author}{_newLine}\t\t{composition.Title}{_newLine}{_newLine}";
+            _output.Execute(request);
+            File.AppendAllText(_path, request);
             var remover = new CompositionRemover();
             return remover.Execute(model);
         }
 
         public ObjectModel SearchComposition(ObjectModel model)
         {
-            output = new Output();
+            _output = new Output();
             var composition = model.Compositions.First();
             var request =
-                $"[{DateTime.Now}]{s}New sequence:{s}\tSearching composition:{s}\t\t{model.Result}{s}\t\t{composition.Path}{s}\t\t{composition.Author}{s}\t\t{composition.Title}{s}{s}";
-            output.Execute(request);
-            File.AppendAllText(path, request);
+                $"[{DateTime.Now}]{_newLine}New request:{_newLine}\tSearching composition:{_newLine}\t\t{model.Result}{_newLine}\t\t{composition.Path}{_newLine}\t\t{composition.Author}{_newLine}\t\t{composition.Title}{_newLine}{_newLine}";
+            _output.Execute(request);
+            File.AppendAllText(_path, request);
             var searcher = new CompositionSearchEngine();
             return searcher.Execute(model);
         }
 
         public ObjectModel GetCompositionsList(ObjectModel model)
         {
-            output = new Output();
+            _output = new Output();
             var request =
-                $"[{DateTime.Now}]{s}New sequence:{s}\tGetting compositions list:{s}\t\t{model.Result}{s}{s}";
-            output.Execute(request);
-            File.AppendAllText(path, request);
+                $"[{DateTime.Now}]{_newLine}New request:{_newLine}\tGetting compositions list:{_newLine}\t\t{model.Result}{_newLine}{_newLine}";
+            _output.Execute(request);
+            File.AppendAllText(_path, request);
             var compositionsDosplayer = new CompositionsListDisplayer();
             return compositionsDosplayer.Execute(model);
         }
 
         public ObjectModel GetPlaylistsList()
         {
-            output = new Output();
+            _output = new Output();
             var request =
-                $"[{DateTime.Now}]{s}New sequence:{s}\tGetting playlists list:{s}{s}";
-            output.Execute(request);
-            File.AppendAllText(path, request);
+                $"[{DateTime.Now}]{_newLine}New request:{_newLine}\tGetting playlists list:{_newLine}{_newLine}";
+            _output.Execute(request);
+            File.AppendAllText(_path, request);
             var playlistsDisplyaer = new PlaylistsListDisplayer();
             return playlistsDisplyaer.Execute(new ObjectModel());
         }

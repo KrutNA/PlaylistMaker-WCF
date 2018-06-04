@@ -8,5 +8,12 @@ namespace PlaylistMaker.Logic.Stream
         {
             Console.Write(text);
         }
+
+        public void Execute(string text, ConsoleColor color)
+        {
+            Console.ForegroundColor = color;
+            Console.Write(text);
+            Console.ForegroundColor = ConsoleColor.White;
+        }
     }
 }

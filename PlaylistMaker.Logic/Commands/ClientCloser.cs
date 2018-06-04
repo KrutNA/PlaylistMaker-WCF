@@ -6,7 +6,6 @@ namespace PlaylistMaker.Logic.Commands
     public class ClientCloser : ICommand
     {
         private const string Name = "exit";
-        private const int ArgsCount = 0;
 
         public ObjectModel Execute(ObjectModel model)
         {
